@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: empform-deployment
+  labels:
+    app: empform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: empform
+  template:
+    metadata:
+      labels:
+        app: empform
+    spec:
+      containers:
+      - name: empform
+        image: acrnihal.azurecr.io/empform:0.1
+        ports: 
+        - containerPort: 5000
+          hostPort: 5000
+
+sapiVersion: v1
+kind: Service
+metadata:
+  name: empform
+  labels:
+    app: empform
+spec:
+  selector:
+    app: empform
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000
